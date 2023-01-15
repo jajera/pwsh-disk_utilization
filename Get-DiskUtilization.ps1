@@ -12,7 +12,7 @@ $redColor = "#FF0000"
 $orangeColor = "#FBB917" 
 $whiteColor = "#00FF00"
 
-$computers =  Get-Content .\serverlist.txt
+$computers = Get-Content .\serverlist.txt
 
 If (Test-Path $hcReport) { Remove-Item $hcReport } 
  
@@ -80,12 +80,10 @@ $tableHeader = "
 	" 
 Add-Content $hcReport $tableHeader 
   
-foreach($computer in $computers) 
-{  
+foreach ($computer in $computers) {  
 	$disks = Get-WmiObject -ComputerName $computer -Class Win32_LogicalDisk -Filter "DriveType = 3" 
-	$computer = $computer.toupper() 
-	foreach($disk in $disks) 
-	{         
+	$computer = $computer.toupper()
+	foreach ($disk in $disks) {         
 		$deviceID = $disk.DeviceID; 
 		$volName = $disk.VolumeName; 
 		[float]$size = [Math]::Round($disk.Size, 2); 
@@ -96,12 +94,10 @@ foreach($computer in $computers)
 		$usedSpaceGB = [Math]::Round($sizeGB - $freeSpaceGB, 2);
 		$color = $whiteColor; 
  
-		if($percentFree -lt $percentWarning)       
-		{ 
+		if ($percentFree -lt $percentWarning) { 
 			$color = $orangeColor  
 
-			if($percentFree -lt $percentCritcal) 
-			{ 
+			if ($percentFree -lt $percentCritcal) { 
 				$color = $redColor 
 			}         
 		} 
